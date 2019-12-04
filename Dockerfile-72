@@ -19,7 +19,7 @@ ENV TERM xterm
 
 # Add the "PHP 7" ppa
 RUN apt-get install -y software-properties-common && \
-    add-apt-repository -y ppa:ondrej/php
+  add-apt-repository -y ppa:ondrej/php
 
 #
 # --------------------------------------------------------------------------
