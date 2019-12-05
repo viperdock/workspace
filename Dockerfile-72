@@ -1,10 +1,8 @@
-#
 # --------------------------------------------------------------------------
 # Image Setup
 # --------------------------------------------------------------------------
-#
 
-FROM phusion/baseimage:latest
+FROM phusion/baseimage:0.10.2
 
 LABEL maintainer="Michael Noël <mike@viperframe.work>"
 
@@ -21,16 +19,14 @@ ENV TERM xterm
 RUN apt-get install -y software-properties-common && \
   add-apt-repository -y ppa:ondrej/php
 
-#
 # --------------------------------------------------------------------------
 # Software's Installation
 # --------------------------------------------------------------------------
-#
 
 # Install "PHP Extentions", "libraries", "Software's"
 RUN apt-get update && \
   apt-get install -y apt-transport-https && \
-  apt-get upgrade -y && \
+  apt-get upgrade -y -o Dpkg::Options::="--force-confdef" && \
   apt-get install -y --allow-downgrades --allow-remove-essential \
     --allow-change-held-packages \
     php7.2-cli \
@@ -63,14 +59,13 @@ RUN apt-get update && \
     postgresql-client \
   && apt-get clean
 
-#####################################
-# Composer:
-#####################################
+# --------------------------------------------------------------------------
+# Composer
+# --------------------------------------------------------------------------
 
 # Install composer and add its bin to the PATH.
 RUN curl -s http://getcomposer.org/installer | php && \
   echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
   mv composer.phar /usr/local/bin/composer
 
-# Source the bash
 RUN . ~/.bashrc
